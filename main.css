@@ -1,0 +1,91 @@
+* {
+	box-sizing: border-box;
+}
+
+.outer-border {
+	position:relative;
+	margin: 0 auto;
+	width: 600px;
+	height:500px;
+	background-color: white;
+	border: 1px solid lightgrey;
+}
+
+.restaurant-banner {
+	position:absolute;
+	display:block;
+	text-align: center;
+	margin: 20px 20px;
+	background-color: green;
+	width:550px;
+	height:100px;
+	border: 2px solid red;
+	line-height:100px;
+	box-shadow: 10px 10px 10px #888888;
+}
+
+.title {
+	color: yellow;
+	font-size: 42px;
+	margin: 0px;
+}
+
+/*menu item container appearance*/
+.menu-item {
+	width:140px;
+	height:200px;
+	border: 2px solid red;
+	display:inline-block;
+	/*float:left;*/
+	margin:0 20px;
+	background-color: green;
+}
+
+	/*position of m1*/
+	#m1 {
+		
+		margin: 140px 10px 20px 65px;
+		/*position: relative;*/
+		display:inline-block;
+	}
+
+	/*position of m2*/
+	#m2 {
+		
+		margin: 140px 10px 20px 10px;
+		/*position:relative;*/
+		display:inline-block;
+	}
+
+	/*position of m3*/
+	#m3 {
+		
+		margin: 140px 10px 20px 10px;
+		/*position:relative;*/
+		display:inline-block;
+	}
+
+.menu-photo {
+	display:block;
+	margin: 10px auto;
+	height:60px;
+	width: auto;
+	border: 2px solid red;
+}
+
+.menu-item-title {
+	display:inline-block;
+	text-align:center;
+	width: 120px;
+	margin: 10px auto;
+}
+
+
+.menu-button {
+	display:block;
+	margin: 10px auto;
+}
+
+
+
+
