@@ -2,6 +2,7 @@ $(document).on('ready', function() {
 // GLOBAL VARIABLES
 var editOrder = false; //only true when order is being edited. PLACE ORDER button resets value to false.
 var orderTotal = 0; //incremented by each ordered menu item. PLACE ORDER button resets value to 0.
+var currentOrder = {};
 
 // ***************************FOOD ITEM OBJECT**********************************
 var FoodItem = function (name, calories, vegan, glutenFree, citrusFree) {
@@ -63,7 +64,7 @@ Drink.prototype.create = function(){
 }
 
 			//Instance of Margarita 
-			var margarita = new Drink ('Margarita', 'Awesome', 5.00, [tequila, margarita_mix, salt]);
+			var margarita = new Drink ('Margarita', 'Awesome', 5.50, [tequila, margarita_mix, salt]);
 
 // *****************************PLATE OBJECT*************************************************************************************************************
 var Plate = function (name, description, price, ingredients) {
@@ -85,9 +86,28 @@ Plate.prototype.toStrings = function () {
             '\nIngredients : ' + plateString + '\n'+
             '\n^^ ********** ^^';
 }
-    // Plate.prototype.isVegan = function () {
-    //     return this.foodItem.vegan;
-    // }
+
+//boolean helper function for dietary reqs
+function boolCheck(array) {
+    var output = true;
+    for (i=0;i<array.length;i++){
+        if (array[i]===false){
+            output = false;
+        }
+    }
+    return output;
+}
+
+Plate.prototype.isVegan = function () {
+    var vegan = true;
+    var veganArray = [];
+    for (i=0;i<this.ingredients.length;i++){
+        veganArray.push(this.ingredients[i].vegan);
+    }
+    return boolCheck(veganArray);
+    
+    }
+    
     // Plate.prototype.isGlutenFree = function () {
     //     return and(pluck(this.ingredients, 'glutenFree'));
     // }
@@ -104,7 +124,7 @@ Plate.prototype.create = function(){
 			var burritoPlate = new Plate('Burrito Plate', 'Huge', 6.00, [tortilla, chicken, lettuce]);
 			// Instance of Guac Plate
 			var guacPlate = new Plate('Guac Plate', 'Delicious', 6.00, [tacoShell, groundBeef, guacamole]);
-
+console.log(burritoPlate.isVegan());
 // *******************************ORDER OBJECT**********************************************************************************************************
 
 var Order = function (plates) {
@@ -120,8 +140,8 @@ Order.prototype.toStrings = function () {
 }
 
 // instantiate an order as starting condition.... refactor later to initiate with button click
-var order1 = new Order([]);
-console.log(order1);
+// var order1 = new Order([]);
+// console.log(order1);
 
 // *******************************MENU OBJECT**********************************************************************************************************
 var Menu = function (plates) {
@@ -172,6 +192,27 @@ Restaurant.prototype.create = function(){
 // }
 // *****************************************************************************************************************************************
 
+//total number to display on page
+var totalDisplay = $('<p class="order-total-text"></p>');
+$('.order-total-border').append(totalDisplay);
+
+//three menu item price/purchase buttons... only price is OO
+var m1Button = $('<button class="menu-button"></button>');
+$('#m1').append(m1Button);
+m1Button.text('$' + burritoPlate.price);
+
+var m2Button = $('<button class="menu-button"></button>');
+$('#m2').append(m2Button);
+m2Button.text('$' + guacPlate.price);
+
+var m3Button = $('<button class="menu-button"></button>');
+$('#m3').append(m3Button);
+m3Button.text('$' + margarita.price);
+
+
+
+
+
 // ***************VVVV*** JQUERY EVENT LISTENERS and HANDLERS ***VVVV***********
 
 // When a menu item button is clicked:
@@ -182,13 +223,31 @@ Restaurant.prototype.create = function(){
 $('.menu-button').on('click', function(){
 	if(!editOrder){
 		editOrder = true;
-	}
-
-	// include three conditionals for each menu button.  update orderTotal
-	orderTotal += burritoPLate.price;
-	console.log(orderTotal);
-	console.log(editOrder);
-
+        currentOrder = new Order();
+	}    
 });
+
+$('.place-order-button').on('click',function(){
+    editOrder = false;
+    orderTotal = 0;
+    totalDisplay.text(orderTotal);
+})
+
+// three click handlers for each menu button.  update orderTotal and totalDisplay.
+$('#m1').children('button').on('click',function(){
+    orderTotal += burritoPlate.price;
+    totalDisplay.text(orderTotal);
+})
+
+$('#m2').children('button').on('click',function(){
+    orderTotal += guacPlate.price;
+    totalDisplay.text(orderTotal);
+})
+
+$('#m3').children('button').on('click',function(){
+    orderTotal += margarita.price;
+    totalDisplay.text(orderTotal);
+})
+
 
 });
